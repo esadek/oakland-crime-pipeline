@@ -6,7 +6,7 @@ from prefect.tasks.database.sqlite import SQLiteScript
 
 @task
 def extract_crime_data():
-    """Extract JSON crime data."""
+    """Extract JSON crime data from API."""
     client = Socrata('data.oaklandnet.com', None)
     results = client.get_all('ym6k-rx7a')
     return results
