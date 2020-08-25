@@ -4,18 +4,20 @@ from sodapy import Socrata
 from prefect import task, Flow
 from prefect.tasks.database.sqlite import SQLiteScript
 
+SOURCE_DOMAIN = 'data.oaklandnet.com'
+DATASET_IDENTIFIER = 'ym6k-rx7a'
 
 @task
 def extract_crime_data():
     '''Retrieve crime data from Socrata API.'''
-    client = Socrata('data.oaklandnet.com', None)
-    return client.get_all('ym6k-rx7a')
+    client = Socrata(SOURCE_DOMAIN, None)
+    results = client.get_all(DATASET_IDENTIFIER)
+    return pd.DataFrame.from_records(results)
 
 
 @task
 def transform_crime_data(data):
     '''Convert and clean crime data.'''
-    df = pd.DataFrame.from_records(data) # Convert data to DataFrame
     df = df.rename(columns={'location_1': 'location'}) # Rename location column
     to_drop = ['city', 'state', ':@computed_region_w23w_jfhw']
     df.drop(to_drop, axis=1, inplace=True) # Drop unnecessary columns
