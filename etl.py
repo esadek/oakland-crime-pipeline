@@ -14,17 +14,13 @@ def extract():
     results = client.get_all(DATASET_IDENTIFIER)
     return pd.DataFrame.from_records(results)
 
-
 @task
 def transform(data):
     '''Transform crime data.'''
-    
-    # Rename location column
-    df = data.rename(columns={'location_1': 'location'})
 
     # Drop unnecessary columns
-    to_drop = ['city', 'state', ':@computed_region_w23w_jfhw']
-    df.drop(to_drop, axis=1, inplace=True)
+    to_drop = ['city', 'state', 'location_1', ':@computed_region_w23w_jfhw']
+    df = data.drop(to_drop, axis=1)
 
     # Drop rows not from last 90 days
     today = str(date.today())
@@ -32,7 +28,6 @@ def transform(data):
     df = df[(df['datetime'] >= ninety_days_ago) & (df['datetime'] <= today)]
 
     return df
-
 
 @task
 def load(data):
