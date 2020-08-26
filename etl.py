@@ -1,5 +1,5 @@
 import pandas as pd
-import datetime
+from datetime import date, timedelta
 from sodapy import Socrata
 from prefect import task, Flow
 from prefect.tasks.database.sqlite import SQLiteScript
@@ -18,12 +18,19 @@ def extract_crime_data():
 @task
 def transform_crime_data(data):
     '''Convert and clean crime data.'''
-    df = data.rename(columns={'location_1': 'location'}) # Rename location column
+    
+    # Rename location column
+    df = data.rename(columns={'location_1': 'location'})
+
+    # Drop unnecessary columns
     to_drop = ['city', 'state', ':@computed_region_w23w_jfhw']
-    df.drop(to_drop, axis=1, inplace=True) # Drop unnecessary columns
-    today = str(datetime.date.today())
-    ninety_days_ago = str(datetime.date.today() - datetime.timedelta(days=90))
-    df = df[(df['datetime'] >= ninety_days_ago) & (df['datetime'] <= today)] # Drop rows not from last 90 days
+    df.drop(to_drop, axis=1, inplace=True)
+
+    # Drop rows not from last 90 days
+    today = str(date.today())
+    ninety_days_ago = str(date.today() - timedelta(days=90))
+    df = df[(df['datetime'] >= ninety_days_ago) & (df['datetime'] <= today)]
+
     return df
 
 
