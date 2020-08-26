@@ -8,7 +8,7 @@ SOURCE_DOMAIN = 'data.oaklandnet.com'
 DATASET_IDENTIFIER = 'ym6k-rx7a'
 
 @task
-def extract_crime_data():
+def extract():
     '''Retrieve crime data from Socrata API.'''
     client = Socrata(SOURCE_DOMAIN, None)
     results = client.get_all(DATASET_IDENTIFIER)
@@ -16,8 +16,8 @@ def extract_crime_data():
 
 
 @task
-def transform_crime_data(data):
-    '''Convert and clean crime data.'''
+def transform(data):
+    '''Transform crime data.'''
     
     # Rename location column
     df = data.rename(columns={'location_1': 'location'})
@@ -35,13 +35,13 @@ def transform_crime_data(data):
 
 
 @task
-def load_crime_data(data):
+def load(data):
     '''Load crime data into SQLite database.'''
     pass
 
 with Flow('ETL') as flow:
-    e = extract_crime_data()
-    t = transform_crime_data(e)
-    l = load_crime_data(t)
+    e = extract()
+    t = transform(e)
+    l = load(t)
 
 flow.run()
