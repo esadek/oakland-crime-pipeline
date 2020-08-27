@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sodapy import Socrata
 
 def constrict_days(df, col, days):
-    '''Remove entries not from last specified number of days'''
+    '''Remove entries not from last specified number of days.'''
     today = str(date.today())
     x_days_ago = str(date.today() - timedelta(days=days))
     return df[(df[col] >= x_days_ago) & (df[col] <= today)]
