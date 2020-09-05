@@ -22,7 +22,7 @@ def transform(data):
     to_drop = ['city', 'state', 'location_1', ':@computed_region_w23w_jfhw']
     df = data.drop(to_drop, axis=1)
     df = constrict_days(df, 'datetime', 90)
-    df['datetime'] = pd.to_datetime(df['datetime'])
+    df.datetime = pd.to_datetime(df.datetime)
     return df
 
 def load(data):
