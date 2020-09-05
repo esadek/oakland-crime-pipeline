@@ -2,38 +2,64 @@ import pandas as pd
 from datetime import date, timedelta
 from sqlalchemy import create_engine
 from sodapy import Socrata
+from prefect import task, Flow, Parameter
 
-# Helper function
+@task
+def extract(source, dataset):
+    '''Retrieve crime data from Socrata API.'''
+    client = Socrata(source, None)
+    results = client.get_all(dataset)
+    return pd.DataFrame.from_records(results)
+
+@task
+def drop_columns(df, cols):
+    '''Remove unnecessary columns.'''
+    return df.drop(cols, axis=1)
+
+@task
 def constrict_days(df, col, days):
     '''Remove entries not from last specified number of days.'''
     today = str(date.today())
     x_days_ago = str(date.today() - timedelta(days=days))
     return df[(df[col] >= x_days_ago) & (df[col] <= today)]
 
-# ETL functions
-def extract():
-    '''Retrieve crime data from Socrata API.'''
-    client = Socrata('data.oaklandnet.com', None)
-    results = client.get_all('ym6k-rx7a')
-    return pd.DataFrame.from_records(results)
+@task
+def convert_datetime(df, col):
+    '''Convert column to type datetime.'''
+    dataframe = df.copy()
+    dataframe[col] = pd.to_datetime(dataframe[col])
+    return dataframe
 
-def transform(data):
-    '''Transform crime data.'''
-    to_drop = ['city', 'state', 'location_1', ':@computed_region_w23w_jfhw']
-    df = data.drop(to_drop, axis=1)
-    df = constrict_days(df, 'datetime', 90)
-    df.datetime = pd.to_datetime(df.datetime)
-    return df
-
-def load(data):
+@task
+def load(df, db, table):
     '''Load crime data into SQLite database.'''
-    engine = create_engine('sqlite:///database.db')
-    sqlite_connection = engine.connect()
-    data.to_sql('crimes', sqlite_connection)
-    sqlite_connection.close()
+    engine = create_engine(db)
+    connection = engine.connect()
+    df.to_sql(table, connection)
+    connection.close()
+
+with Flow('ETL') as flow:
+    source_domain = Parameter('source_domain')
+    dataset_id = Parameter('dataset_id')
+    to_drop = Parameter('to_drop')
+    column = Parameter('column')
+    days = Parameter('days')
+    database = Parameter('database')
+    table = Parameter('table')
+
+    extracted = extract(source_domain, dataset_id)
+    post_drop = drop_columns(extracted, to_drop)
+    constricted = constrict_days(post_drop, column, days)
+    converted = convert_datetime(constricted, column)
+    loaded = load(converted, database, table)
 
 if __name__ == '__main__':
-    # ETL pipeline
-    (extract().pipe(transform)
-              .pipe(load)
+    flow.run(
+        source_domain = 'data.oaklandnet.com',
+        dataset_id = 'ym6k-rx7a',
+        to_drop = ['city', 'state', 'location_1', ':@computed_region_w23w_jfhw'],
+        column = 'datetime',
+        days = 90,
+        database = 'sqlite:///database.db',
+        table = 'crimes'
     )
