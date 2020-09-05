@@ -39,6 +39,7 @@ def load(df, db, table):
     connection.close()
 
 with Flow('ETL') as flow:
+    # Parameters
     source_domain = Parameter('source_domain')
     dataset_id = Parameter('dataset_id')
     to_drop = Parameter('to_drop')
@@ -47,6 +48,7 @@ with Flow('ETL') as flow:
     database = Parameter('database')
     table = Parameter('table')
 
+    # Task dependencies
     extracted = extract(source_domain, dataset_id)
     post_drop = drop_columns(extracted, to_drop)
     constricted = constrict_days(post_drop, column, days)
@@ -54,6 +56,7 @@ with Flow('ETL') as flow:
     loaded = load(converted, database, table)
 
 if __name__ == '__main__':
+    # Execute flow
     flow.run(
         source_domain = 'data.oaklandnet.com',
         dataset_id = 'ym6k-rx7a',
