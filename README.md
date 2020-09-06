@@ -42,7 +42,9 @@ $ python3 etl.py
 
 ## Author
 **Emil Sadek**
+
 [GitHub](https://github.com/esadek)
+
 [LinkedIn](https://www.linkedin.com/in/emil-sadek/)
 
 ## License
