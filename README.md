@@ -1,25 +1,23 @@
 # Oakland Crime Pipeline
-> Simple ETL pipeline for crime data from the City of Oakland.
+> Simple ETL pipeline for crime data from the City of Oakland
 
 ### Table of Contents
 - [Introduction](#introduction)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Author](#author)
+- [Credits](#credits)
 - [License](#license)
 
 ## Introduction
-To gain a better understanding of the crime in my hometown as well as exercise my data engineering skills, I created a simple pipeline to extract, transform, and load public crime data into a locally hosted database to query.
-
-The Oakland Police Department provides crime data from the past 90-days to the public through the City of Oakland’s Crime Watch web site. The dataset can be programmatically accessed via the Socrata Open Data API (SODA).
+To gain a better understanding of the crime in my hometown as well as exercise my data engineering skills, I created a simple pipeline to extract, transform, and load public crime data into a locally hosted database to query. The Oakland Police Department provides crime data from the past 90-days to the public through the City of Oakland’s Crime Watch web site. The dataset can be programmatically accessed via the Socrata Open Data API.
 
 ## Dependencies
-- [Python](https://www.python.org/)
-- [Prefect](https://www.prefect.io/core)
-- [Pandas](https://pandas.pydata.org/)
-- [SQLAlchemy](https://www.sqlalchemy.org/)
-- [Sodapy](https://github.com/xmunoz/sodapy)
+- [Python](https://www.python.org/) programming language
+- [Prefect](https://www.prefect.io/core) workflow management system
+- [Pandas](https://pandas.pydata.org/) data manipulation tool
+- [SQLAlchemy](https://www.sqlalchemy.org/) SQL toolkit and object relational mapper
+- [Sodapy](https://github.com/xmunoz/sodapy) Socrata Open Data API client
 
 ## Installation
 Clone repository and change directory:
@@ -40,12 +38,10 @@ To execute the pipeline simply run the etl file:
 $ python3 etl.py
 ```
 
-## Author
-**Emil Sadek**
+## Credits
+Data Provided by [Oakland Police Department](https://www.oaklandca.gov/departments/police)
 
-[GitHub](https://github.com/esadek)
-
-[LinkedIn](https://www.linkedin.com/in/emil-sadek/)
+Dataset Owned by [City of Oakland](https://www.oaklandca.gov/)
 
 ## License
 [MIT](https://github.com/esadek/oakland-crime-pipeline/blob/master/LICENSE)
