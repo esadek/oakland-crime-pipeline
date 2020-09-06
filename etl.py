@@ -32,7 +32,7 @@ def convert_datetime(df, col):
 
 @task
 def load(df, db, table):
-    '''Load crime data into SQLite database.'''
+    '''Load data into SQLite database.'''
     engine = create_engine(db)
     connection = engine.connect()
     df.to_sql(table, connection)
