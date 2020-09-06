@@ -1,5 +1,5 @@
 # Oakland Crime Pipeline
-> Simple ETL pipeline for crime data from the City of Oakland
+Simple ETL pipeline for crime data from the City of Oakland
 
 ### Table of Contents
 - [Introduction](#introduction)
