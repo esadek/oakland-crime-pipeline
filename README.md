@@ -1,5 +1,5 @@
 # Oakland Crime Pipeline
-ETL pipeline for crime data from the City of Oakland
+> Simple ETL pipeline for crime data from the City of Oakland.
 
 ### Table of Contents
 - [Introduction](#introduction)
@@ -10,6 +10,9 @@ ETL pipeline for crime data from the City of Oakland
 - [License](#license)
 
 ## Introduction
+To gain a better understanding of the crime in my hometown as well as exercise my data engineering skills, I created a simple pipeline to extract, transform, and load public crime data into a locally hosted database to query.
+
+The Oakland Police Department provides crime data from the past 90-days to the public through the City of Oakland’s Crime Watch web site. The dataset can be programmatically accessed via the Socrata Open Data API (SODA).
 
 ## Dependencies
 - [Python](https://www.python.org/)
@@ -39,9 +42,7 @@ $ python3 etl.py
 
 ## Author
 **Emil Sadek**
-
 [GitHub](https://github.com/esadek)
-
 [LinkedIn](https://www.linkedin.com/in/emil-sadek/)
 
 ## License
