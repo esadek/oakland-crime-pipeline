@@ -6,7 +6,7 @@ from prefect import task, Flow, Parameter
 
 @task
 def extract(source, dataset):
-    '''Retrieve crime data from Socrata API.'''
+    '''Retrieve data from Socrata API.'''
     client = Socrata(source, None)
     results = client.get_all(dataset)
     return pd.DataFrame.from_records(results)
