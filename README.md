@@ -27,7 +27,7 @@ $ pip install -r requirements.txt
 ## Usage
 To execute the pipeline simply run the etl file:
 ```
-$ python3 etl.py
+$ python3 src/etl.py
 ```
 
 ## Credits
