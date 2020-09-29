@@ -6,15 +6,14 @@ from prefect import task, Flow, Parameter
 
 @task
 def extract(source, dataset):
-    """
-    Retrieve data from Socrata API.
+    """Retrieve data from Socrata API.
     
     Parameters:
-    source (str): Source domain
-    dataset (str): Dataset identifier
+        source (str): Source domain
+        dataset (str): Dataset identifier
 
     Returns:
-    DataFrame: Retrieved dataset
+        DataFrame: Retrieved dataset
     """
     client = Socrata(source, None)
     results = client.get_all(dataset)
@@ -22,30 +21,28 @@ def extract(source, dataset):
 
 @task
 def drop_columns(df, cols):
-    """
-    Remove unnecessary columns.
+    """Remove unnecessary columns.
 
     Parameters:
-    df (DataFrame): Pandas DataFrame
-    cols (list): Column names
+        df (DataFrame): Pandas DataFrame
+        cols (list): Column names
 
     Returns:
-    DataFrame: Resulting dataset
+        DataFrame: Resulting dataset
     """
     return df.drop(cols, axis=1)
 
 @task
 def constrict_days(df, col, days):
-    """
-    Remove entries not from last specified number of days.
+    """Remove entries not from last specified number of days.
 
     Parameters:
-    df (DataFrame): Pandas DataFrame
-    col (str): Column name
-    days (int): Number of days
+        df (DataFrame): Pandas DataFrame
+        col (str): Column name
+        days (int): Number of days
 
     Returns:
-    DataFrame: Resulting dataset
+        DataFrame: Resulting dataset
     """
     today = str(date.today())
     x_days_ago = str(date.today() - timedelta(days=days))
@@ -53,15 +50,14 @@ def constrict_days(df, col, days):
 
 @task
 def convert_datetime(df, col):
-    """
-    Convert column to type datetime.
+    """Convert column to type datetime.
 
     Parameters:
-    df (DataFrame): Pandas DataFrame
-    col (str): Column name
+        df (DataFrame): Pandas DataFrame
+        col (str): Column name
 
     Returns:
-    DataFrame: Resulting dataset
+        DataFrame: Resulting dataset
     """
     dataframe = df.copy()
     dataframe[col] = pd.to_datetime(dataframe[col])
@@ -69,13 +65,12 @@ def convert_datetime(df, col):
 
 @task
 def load(df, db, table):
-    """
-    Load data into SQLite database.
+    """Load data into SQLite database.
 
     Parameters:
-    df (DataFrame): Pandas DataFrame
-    db (str): Database URL
-    table (str): Table name
+        df (DataFrame): Pandas DataFrame
+        db (str): Database URL
+        table (str): Table name
     """
     engine = create_engine(db)
     connection = engine.connect()
@@ -83,6 +78,7 @@ def load(df, db, table):
     connection.close()
 
 with Flow('ETL') as flow:
+
     # Parameters
     source_domain = Parameter('source_domain')
     dataset_id = Parameter('dataset_id')
@@ -100,6 +96,7 @@ with Flow('ETL') as flow:
     loaded = load(converted, database, table)
 
 if __name__ == '__main__':
+
     # Execute flow
     flow.run(
         source_domain = 'data.oaklandnet.com',
