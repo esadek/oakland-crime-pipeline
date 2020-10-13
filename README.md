@@ -8,7 +8,7 @@ To gain a better understanding of the crime in my hometown as well as exercise m
 - [Python](https://www.python.org/) programming language
 - [Prefect](https://www.prefect.io/core) workflow management system
 - [Pandas](https://pandas.pydata.org/) data manipulation tool
-- [SQLAlchemy](https://www.sqlalchemy.org/) SQL toolkit and object relational mapper
+- [SQLAlchemy](https://www.sqlalchemy.org/) SQL toolkit
 - [Sodapy](https://github.com/xmunoz/sodapy) Socrata Open Data API client
 
 ## Installation
