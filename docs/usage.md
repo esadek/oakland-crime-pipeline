@@ -1,6 +1,6 @@
 # Usage
 
-To execute the pipeline simply run the main file:
+To execute the pipeline simply run the Docker image:
 ```
-$ python3 src/main.py
+$ docker run crime-pipeline
 ```
