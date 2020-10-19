@@ -7,6 +7,7 @@ from prefect import task, Flow
 
 @task
 def create_dataframe():
+    """Create DataFrame with two columns."""
     return pd.DataFrame(columns=['col1', 'col2'])
 
 with Flow('test') as flow:
