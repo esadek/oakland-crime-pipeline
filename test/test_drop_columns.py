@@ -15,8 +15,10 @@ with Flow('test') as flow:
 
 class TestDropColumns(unittest.TestCase):
     
+    def setUp(self):
+        self.state = flow.run()
+
     def test_drop_columns(self):
-        state = flow.run()
-        result_df = state.result[transformed_df].result
-        num_result_df_columns = len(result_df.columns)
-        self.assertEqual(num_result_df_columns, 1)
+        result_df = self.state.result[transformed_df].result
+        num_columns = len(result_df.columns)
+        self.assertEqual(num_columns, 1)
