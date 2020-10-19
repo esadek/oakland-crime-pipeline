@@ -7,11 +7,11 @@ from prefect import task, Flow
 
 @task
 def create_dataframe():
-    return pd.DataFrame(columns=['foo', 'bar'])
+    return pd.DataFrame(columns=['col1', 'col2'])
 
 with Flow('test') as flow:
     test_df = create_dataframe()
-    transformed_df = drop_columns(test_df, ['bar'])
+    transformed_df = drop_columns(test_df, ['col2'])
 
 class TestDropColumns(unittest.TestCase):
     
